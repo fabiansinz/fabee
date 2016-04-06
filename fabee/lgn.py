@@ -41,7 +41,7 @@ class InjectionSubstance(dj.Lookup):
     contents = [
         dict(substance="Dextran", concentration=1, solvent='PBS'),
         dict(substance="AAV-mRuby2-GCamp6", concentration=1, solvent='PBS'),
-        dict(substance="AAV1_Syn_GCamp6s-0.5mul_Alexa_1mM", solvent='Saline')
+        dict(substance="AAV1_Syn_GCamp6s-0.5mul_Alexa_1mM", concentration=None, solvent='Saline')
     ]
 
 
