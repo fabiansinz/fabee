@@ -18,6 +18,7 @@ class AtlasStereotacticTargets(dj.Lookup):
     """
 
     contents =  [('dLGN', 2.3, 2.25, 2.5, 4.21),
+                 ('Tang2016_dLGN', 2.6, 2.15, 2.7, 4.21),
                  ('dLGN10302015', 2.4, 2.25, 2.6, 4.21),
                  ('dLGN12032015', 2.5, 2.5, 2.7, 4.21),
                  ('dLGNDeeper', 2.3, 2.4, 2.7, 4.21),
