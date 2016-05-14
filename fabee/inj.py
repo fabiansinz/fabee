@@ -17,12 +17,14 @@ class AtlasStereotacticTargets(dj.Lookup):
     ventral                       : double # coordinate ventral from cortical surface in mm
     lambda_bregma_basedist=4.21   : double # base distance between lambda and bregma from the stereotactic atlas in mm
     """
+    contents =  [('dLGN_01', 2.3, 2.25, 2.5, 4.21),       # dLGN
+                 ('dLGN_Tang2016', 2.6, 2.15, 2.7, 4.21), # Tang2016_dLGN
+                 ('dLGN_05', 2.4, 2.25, 2.6, 4.21),       # dLGN10302015
+                 ('dLGN_06', 2.5, 2.5, 2.7, 4.21),        # dLGN12032015
+                 ('dLGN_02', 2.3, 2.4, 2.7, 4.21),        # dLGNDeeper
+                 ('dLGN_03', 2.3, 2.3, 2.6, 4.21),        # dLGNmod
+                 ('dLGN_04', 2.3, 2.4, 2.6, 4.21)]        # dLGNMoreVentralLateral
 
-    contents = [('dLGN', 2.5, 2.5, 2.7, 4.21),
-                ('Tang2016_dLGN', 2.6, 2.15, 2.7, 4.21),
-                ('Tang2016_posterior_dLGN', 3.0, 2.15, 2.7, 4.21),
-                ('Tang2016_anterior_dLGN', 2.2, 2.15, 2.7, 4.21),
-                ]
 
 
 @schema
@@ -54,19 +56,20 @@ class Substance(dj.Lookup):
                 dict(substance_id=2, substance_type='virus'),
                 dict(substance_id=3, substance_type='virus'),
             ]
-            self.insert(contents)
+            
+            self.insert(contents, skip_duplicates=True)
 
             viruses = [
-                dict(substance_id=1, virus_id=), # TODO add virus_id
-                dict(substance_id=2, virus_id=), # TODO add virus_id
-                dict(substance_id=3, virus_id=), # TODO add virus_id
+                dict(substance_id=1, virus_id=31), 
+                dict(substance_id=2, virus_id=32), 
+                dict(substance_id=3, virus_id=33), 
             ]
-            self.Virus().insert(viruses)
+            self.Virus().insert(viruses, skip_duplicates=True)
 
             dyes = [
                 dict(substance_id=0, dye_name='Dextran', solvent='PBS')
             ]
-            self.Dye().insert(dyes)
+            self.Dye().insert(dyes, skip_duplicates=True)
 
 
     class Virus(dj.Part):
@@ -122,7 +125,7 @@ class PullerProgram(dj.Lookup):
 
 
 @schema
-class Injections(dj.Manual):
+class Injection(dj.Manual):
     definition = """
     # Injections
 
@@ -148,7 +151,7 @@ class Injections(dj.Manual):
 class InjectionNote(dj.Manual):
     definition = """
     # notes concerning injections
-    -> Injections
+    -> Injection
     ts=CURRENT_TIMESTAMP         : timestamp # time of injection
     ---
     text                         : varchar(2000) # note

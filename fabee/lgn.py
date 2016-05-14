@@ -39,11 +39,11 @@ class InjectionSubstance(dj.Lookup):
     solvent=null            : enum("PBS", "Saline") # what the substance was diluted with
     """
 
-    contents = [
-        dict(substance="Dextran", concentration=1, solvent='PBS'),
-        dict(substance="AAV-mRuby2-GCamp6", concentration=1, solvent='PBS'),
-        dict(substance="AAV1_Syn_GCamp6s-0.5mul_Alexa_1mM", concentration=None, solvent='Saline')
-    ]
+    # contents = [
+    #     dict(substance="Dextran", concentration=1, solvent='PBS'),
+    #     dict(substance="AAV-mRuby2-GCamp6", concentration=1, solvent='PBS'),
+    #     dict(substance="AAV1_Syn_GCamp6s-0.5mul_Alexa_1mM", concentration=None, solvent='Saline')
+    # ]
 
 
 @labbook
