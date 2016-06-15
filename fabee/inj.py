@@ -121,7 +121,7 @@ class PullerProgram(dj.Lookup):
     ---
     """
 
-    contents = [(51,)]
+    # contents = [(51,)]
 
 
 @schema
@@ -153,6 +153,7 @@ class InjectionNote(dj.Manual):
     # notes concerning injections
     -> Injection
     ts=CURRENT_TIMESTAMP         : timestamp # time of injection
-    ---
+    ---a
     text                         : varchar(2000) # note
     """
+
