@@ -55,6 +55,7 @@ class Substance(dj.Lookup):
                 dict(substance_id=1, substance_type='virus'),
                 dict(substance_id=2, substance_type='virus'),
                 dict(substance_id=3, substance_type='virus'),
+                dict(substance_id=4, substance_type='virus'),
             ]
             
             self.insert(contents, skip_duplicates=True)
@@ -63,6 +64,7 @@ class Substance(dj.Lookup):
                 dict(substance_id=1, virus_id=31), 
                 dict(substance_id=2, virus_id=32), 
                 dict(substance_id=3, virus_id=33), 
+                dict(substance_id=4, virus_id=34),
             ]
             self.Virus().insert(viruses, skip_duplicates=True)
 
