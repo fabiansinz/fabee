@@ -23,7 +23,8 @@ class AtlasStereotacticTargets(dj.Lookup):
                  ('dLGN_06', 2.5, 2.5, 2.7, 4.21),        # dLGN12032015
                  ('dLGN_02', 2.3, 2.4, 2.7, 4.21),        # dLGNDeeper
                  ('dLGN_03', 2.3, 2.3, 2.6, 4.21),        # dLGNmod
-                 ('dLGN_04', 2.3, 2.4, 2.6, 4.21)]        # dLGNMoreVentralLateral
+                 ('dLGN_04', 2.3, 2.4, 2.6, 4.21),        # dLGNMoreVentralLateral
+                 ('V1_perp', 3.8, 2.5, .35, 4.21)]        # dLGNMoreVentralLateral
 
 
 
