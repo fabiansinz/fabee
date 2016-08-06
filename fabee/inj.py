@@ -1,6 +1,6 @@
 import datajoint as dj
 from djaddon import hdf5
-from commons import mice, virus
+from commons import mice, virus, inj
 
 schema = dj.schema('fabee_injections', locals())
 
@@ -17,15 +17,14 @@ class AtlasStereotacticTargets(dj.Lookup):
     ventral                       : double # coordinate ventral from cortical surface in mm
     lambda_bregma_basedist=4.21   : double # base distance between lambda and bregma from the stereotactic atlas in mm
     """
-    contents =  [('dLGN_01', 2.3, 2.25, 2.5, 4.21),       # dLGN
-                 ('dLGN_Tang2016', 2.6, 2.15, 2.7, 4.21), # Tang2016_dLGN
-                 ('dLGN_05', 2.4, 2.25, 2.6, 4.21),       # dLGN10302015
-                 ('dLGN_06', 2.5, 2.5, 2.7, 4.21),        # dLGN12032015
-                 ('dLGN_02', 2.3, 2.4, 2.7, 4.21),        # dLGNDeeper
-                 ('dLGN_03', 2.3, 2.3, 2.6, 4.21),        # dLGNmod
-                 ('dLGN_04', 2.3, 2.4, 2.6, 4.21),        # dLGNMoreVentralLateral
-                 ('V1_perp', 3.8, 2.5, .35, 4.21)]        # dLGNMoreVentralLateral
-
+    contents = [('dLGN_Tang2016', 2.6, 2.15, 2.7, 4.21), 
+                ('dLGN_fabee01', 2.3, 2.25, 2.5, 4.21),  # dLGN
+                ('dLGN_fabee05', 2.4, 2.25, 2.6, 4.21),  # dLGN10302015
+                ('dLGN_fabee06', 2.5, 2.5, 2.7, 4.21),  # dLGN12032015
+                ('dLGN_fabee02', 2.3, 2.4, 2.7, 4.21),  # dLGNDeeper
+                ('dLGN_fabee03', 2.3, 2.3, 2.6, 4.21),  # dLGNmod
+                ('dLGN_fabee04', 2.3, 2.4, 2.6, 4.21),  # dLGNMoreVentralLateral
+                ]
 
 
 @schema
@@ -37,6 +36,7 @@ class Dye(dj.Lookup):
     """
 
     contents = [('Dextran',)]
+
 
 @schema
 class Substance(dj.Lookup):
@@ -58,13 +58,13 @@ class Substance(dj.Lookup):
                 dict(substance_id=3, substance_type='virus'),
                 dict(substance_id=4, substance_type='virus'),
             ]
-            
+
             self.insert(contents, skip_duplicates=True)
 
             viruses = [
-                dict(substance_id=1, virus_id=31), 
-                dict(substance_id=2, virus_id=32), 
-                dict(substance_id=3, virus_id=33), 
+                dict(substance_id=1, virus_id=31),
+                dict(substance_id=2, virus_id=32),
+                dict(substance_id=3, virus_id=33),
                 dict(substance_id=4, virus_id=34),
             ]
             self.Virus().insert(viruses, skip_duplicates=True)
@@ -73,7 +73,6 @@ class Substance(dj.Lookup):
                 dict(substance_id=0, dye_name='Dextran', solvent='PBS')
             ]
             self.Dye().insert(dyes, skip_duplicates=True)
-
 
     class Virus(dj.Part):
         definition = """
@@ -160,3 +159,14 @@ class InjectionNote(dj.Manual):
     text                         : varchar(2000) # note
     """
 
+
+def migrate_to_commons():
+    virus_injections = Injection() * Substance.Virus() * inj.Site() * inj.GuidanceMethod()   \
+                       & dict(injection_site='dLGN', guidance='stereotactic')
+    inj.VirusInjection().insert(
+        virus_injections.proj('animal_id', 'virus_id', 'speed', 'toi', 'volume', 'guidance', 'injection_site').fetch.as_dict(),
+        skip_duplicates=True, ignore_extra_fields=True)
+
+    inj_loc = virus_injections.proj('virus_id', 'caudal','lateral', 'ventral', 'adjustment', 'lambda_bregma',\
+                                    target_id="SUBSTRING_INDEX(SUBSTRING_INDEX(area, '_', 2), '_', -1)")
+    inj.InjectionLocation().insert(inj_loc.fetch.as_dict(),skip_duplicates=True, ignore_extra_fields=True)
