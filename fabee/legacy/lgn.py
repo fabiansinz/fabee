@@ -2,7 +2,7 @@ import datajoint as dj
 from djaddon import hdf5
 from commons import mice
 
-labbook = dj.schema('fabee_labbook', locals())
+labbook = dj.schema('fabee_legacy_lgn', locals())
 
 @labbook
 class AtlasStereotacticTargets(dj.Lookup):

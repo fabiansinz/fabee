@@ -2,7 +2,7 @@ import datajoint as dj
 from djaddon import hdf5
 from commons import mice, virus, inj
 
-schema = dj.schema('fabee_injections', locals())
+schema = dj.schema('fabee_legacy_inj', locals())
 
 
 @schema
